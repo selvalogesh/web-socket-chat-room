@@ -1,0 +1,33 @@
+.TextBox {
+    position: relative;
+    background-color: #d5d5d5;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+    padding: 0vw 10px 0vw 0vw;
+    height: fit-content;
+}
+
+.TextBox * {
+    padding: 2px;
+}
+
+.NameBox {
+    flex: 1;
+}
+
+.MessageBox {
+    flex: 3;
+}
+
+.EmojiBox {
+    position: absolute;
+    left: 2px;
+    top: -72vh;
+    z-index: 1;
+}
+
+.PickerBox {
+    background-color: tomato;
+}
