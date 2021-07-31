@@ -1,0 +1,2 @@
+(this["webpackJsonpgroup-chat-room"]=this["webpackJsonpgroup-chat-room"]||[]).push([[7],{168:function(t,a,e){"use strict";e.r(a);e(1);var r=e(0),s=function(t){return t.data.text&&Object(r.jsxs)("div",{children:[" ",Object(r.jsx)("span",{children:t.data.name})," ",t.data.text," "]})};s.defaultProps={},a.default=s}}]);
+//# sourceMappingURL=7.096993e9.chunk.js.map

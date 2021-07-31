@@ -11,6 +11,8 @@ import insertTextAtCursor from 'insert-text-at-cursor';
 import styles from './TextBox.module.css';
 import { makeStyles } from '@material-ui/core/styles';
 
+import sockerIO from '../../libs/socketClient';
+
 const useStyles = makeStyles({
   TextInput: {
     font: 'inhert',
@@ -43,9 +45,14 @@ const TextBox = () => {
         inputFlag = true;
       }
     }
-    // console.log(inputFlag)
     inputFlag && insertTextAtCursor(element, emoji)
   };
+
+  const handleSend = (e) => {
+    setShowEmoji(false);
+    setTextMessage('');
+    Name && textMessage && sockerIO.emit('message',{name:Name,text:textMessage});
+  }
 
   return (
     <div className={styles.TextBox}>
@@ -59,7 +66,7 @@ const TextBox = () => {
           >
             Hide
           </Button> */}
-          <EmojiPicker onEmojiClick={ onEmojiClick } pickerStyle={ emojiStyle } />
+          <EmojiPicker disableSearchBar={true} onEmojiClick={ onEmojiClick } pickerStyle={ emojiStyle } />
         </div>
       }
       <div>
@@ -114,6 +121,7 @@ const TextBox = () => {
           }}
           variant="outlined"
           onChange={(e) => setTextMessage(e.target.value)}
+          onKeyDown={(e) => {e.key === 'Enter' && handleSend(e)}}
           value={textMessage}
         />
       </div>
@@ -123,6 +131,7 @@ const TextBox = () => {
             // label: classes.Button,
             root: classes.Button
           }}
+          onClick = {handleSend}
         >
           <SendIcon />
         </Button>

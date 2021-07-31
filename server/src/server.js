@@ -25,9 +25,9 @@ const socketioServer = new socketIO.Server(server, {
 socketioServer.on("connection", (socket) => {
     //console.log("user connected")
 
-    socket.on("message", (message) => {
-        //console.log(message);
-        socketioServer.emit("message", socket.id.slice(0,2) +': '+message)
+    socket.on("message", (data) => {
+        //console.log(data);
+        socketioServer.emit("message", data)
     })
 })
 
