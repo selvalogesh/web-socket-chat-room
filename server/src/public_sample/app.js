@@ -1,4 +1,4 @@
-const socket = io('ws://');
+const socket = io('wss://');
 
 let handleSend = (e) => {
     const text = document.querySelector('input').value;

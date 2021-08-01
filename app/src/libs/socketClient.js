@@ -1,7 +1,7 @@
-
+import SERVER_URL from '../config';
 import socketClient from 'socket.io-client'
-const SERVER = "wss://";
+// console.log(SERVER_URL)
 
-export const sockerIO = socketClient(SERVER);
+export const sockerIO = socketClient(SERVER_URL);
 
 export default sockerIO

@@ -1,0 +1,6 @@
+{
+    "SSL_SERVER_URL": "wss://",
+    "LOCAL_SERVER_URL": "ws://",
+    "SERVER_NAME": "localhost",
+    "PORT": "3000"
+}
