@@ -1,5 +1,7 @@
 ARG PORT
 
+# ------------------------ UI Build Stage --------------------
+
 FROM node:16.20.0-bullseye-slim AS buildStage
 
 WORKDIR /tmp
@@ -11,6 +13,8 @@ RUN npm install
 COPY ./app/ .
 
 RUN npm run build
+
+# ------------------------ Production Stage --------------------
 
 FROM node:lts-bullseye-slim
 
