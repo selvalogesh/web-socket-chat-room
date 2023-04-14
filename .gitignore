@@ -9,15 +9,14 @@
 /coverage
 
 # production
-/build
-/dist
+**/build/*
+**/dist/*
 
 #other git repos
 */.git/*
 */.gitignore
 
 # misc
-.env
 .DS_Store
 .env.local
 .env.development.local
