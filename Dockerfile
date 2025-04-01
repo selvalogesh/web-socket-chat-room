@@ -2,7 +2,7 @@ ARG PORT
 
 # ------------------------ UI Build Stage --------------------
 
-FROM node:16.20.0-bullseye-slim AS buildStage
+FROM node:16.20.0-bullseye-slim AS buildstage
 
 WORKDIR /tmp
 
@@ -26,6 +26,6 @@ RUN npm install
 
 COPY ./server/ .
 
-COPY --from=buildStage /tmp/build ./src/public
+COPY --from=buildstage /tmp/build ./src/public
 
-CMD npm run start
+CMD ["npm", "run", "start"]
