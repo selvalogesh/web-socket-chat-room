@@ -1,6 +1,8 @@
-version: "3.9"
 services:
-  app:
-    build: .
+  chat-room:
+    image: ghcr.io/selvalogesh/web-socket-chat-room:latest
+    restart: unless-stopped
     ports:
-      - "5000:3000"
+      - 8040:80 # Adjust if the container exposes a different port
+    environment:
+      - NODE_ENV=production # Adjust environment variables as needed
