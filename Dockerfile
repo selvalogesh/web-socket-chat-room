@@ -18,6 +18,8 @@ RUN npm run build
 FROM node:24-bookworm-slim
 
 ENV NODE_ENV=production
+# The node user can't write to /app, so skip babel-node's on-disk cache
+ENV BABEL_DISABLE_CACHE=1
 
 WORKDIR /app
 
