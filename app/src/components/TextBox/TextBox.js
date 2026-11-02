@@ -51,7 +51,7 @@ const TextBox = () => {
   const handleSend = (e) => {
     setShowEmoji(false);
     setTextMessage('');
-    Name && textMessage && sockerIO.emit('message',{name:Name,text:textMessage});
+    Name.trim() && textMessage.trim() && sockerIO.emit('message',{name:Name,text:textMessage});
   }
 
   return (
@@ -98,6 +98,7 @@ const TextBox = () => {
               input: classes.TextInput
             }
           }}
+          inputProps={{ maxLength: 32 }} // matches the server limit
           variant="outlined"
           value={Name}
           onChange={(e) => setName(e.target.value)}
@@ -119,6 +120,7 @@ const TextBox = () => {
               input: classes.TextInput
             },
           }}
+          inputProps={{ maxLength: 1000 }} // matches the server limit
           variant="outlined"
           onChange={(e) => setTextMessage(e.target.value)}
           onKeyDown={(e) => {e.key === 'Enter' && handleSend(e)}}

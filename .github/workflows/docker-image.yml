@@ -1,0 +1,66 @@
+name: Build and publish image
+
+on:
+  push:
+    branches: [main]
+    tags: ["v*"]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  packages: write # push to ghcr.io with GITHUB_TOKEN
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: docker/setup-buildx-action@v4
+
+      - name: Log in to GHCR
+        if: github.event_name != 'pull_request'
+        uses: docker/login-action@v4
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - id: meta
+        uses: docker/metadata-action@v6
+        with:
+          images: ghcr.io/${{ github.repository }}
+          tags: |
+            type=raw,value=latest,enable={{is_default_branch}}
+            type=semver,pattern={{version}}
+            type=sha
+
+      - name: Build image for smoke test
+        uses: docker/build-push-action@v7
+        with:
+          context: .
+          load: true
+          tags: chat-room:test
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+      - name: Smoke test
+        run: |
+          docker run -d --name chat-room -p 8080:80 chat-room:test
+          for i in $(seq 1 30); do curl -fs http://localhost:8080/ > /dev/null && break; sleep 2; done
+          curl -fs http://localhost:8080/ | grep -q '<div id="root">'
+          curl -fs "http://localhost:8080/socket.io/?EIO=4&transport=polling" | grep -q '"sid"'
+          test "$(docker exec chat-room id -un)" = node
+          docker logs chat-room
+
+      # Pull requests stop after the smoke test; pushes to main and v* tags also publish
+      - uses: docker/build-push-action@v7
+        if: github.event_name != 'pull_request'
+        with:
+          context: .
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max

@@ -15,13 +15,14 @@
   "author": "Selva Logesh R",
   "license": "ISC",
   "dependencies": {
-    "dotenv": "^10.0.0",
-    "express": "^4.17.1",
-    "socket.io": "^4.1.3",
-    "@babel/cli": "^7.14.8",
-    "@babel/core": "^7.14.8",
-    "@babel/node": "^7.14.7",
-    "@babel/preset-env": "^7.14.8",
-    "nodemon": "^2.0.12"
+    "dotenv": "^16.6.1",
+    "express": "^4.22.3",
+    "socket.io": "^4.8.4",
+    "@babel/core": "^7.29.7",
+    "@babel/node": "^7.29.7",
+    "@babel/preset-env": "^7.29.7"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.14"
   }
 }
