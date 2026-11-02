@@ -21,8 +21,9 @@ const errorHandler = (err, req, res, next) => {
     }
 
     //throw err;
-    // default to 500 server error
-    return res.status(500).json({ message: err.message });
+    // default to 500 server error; log details, don't leak them to the client
+    console.error(err);
+    return res.status(500).json({ message: 'Internal server error' });
 }
 
 export default errorHandler;

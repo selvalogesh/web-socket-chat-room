@@ -36,11 +36,30 @@ jobs:
             type=semver,pattern={{version}}
             type=sha
 
-      # Pull requests only build; pushes to main and v* tags also publish
-      - uses: docker/build-push-action@v7
+      - name: Build image for smoke test
+        uses: docker/build-push-action@v7
         with:
           context: .
-          push: ${{ github.event_name != 'pull_request' }}
+          load: true
+          tags: chat-room:test
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+      - name: Smoke test
+        run: |
+          docker run -d --name chat-room -p 8080:80 chat-room:test
+          for i in $(seq 1 30); do curl -fs http://localhost:8080/ > /dev/null && break; sleep 2; done
+          curl -fs http://localhost:8080/ | grep -q '<div id="root">'
+          curl -fs "http://localhost:8080/socket.io/?EIO=4&transport=polling" | grep -q '"sid"'
+          test "$(docker exec chat-room id -un)" = node
+          docker logs chat-room
+
+      # Pull requests stop after the smoke test; pushes to main and v* tags also publish
+      - uses: docker/build-push-action@v7
+        if: github.event_name != 'pull_request'
+        with:
+          context: .
+          push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=gha
